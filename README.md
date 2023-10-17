@@ -4,26 +4,26 @@
 
 ---
 
-**Dokumentation verfasst von [Ihr Name]**
+**Dokumentation verfasst von Breadcrumb **
 
 ---
 
 ## Inhaltsverzeichnis
 
-- [Einführung](#einführung)
-- [Code-Übersicht](#code-übersicht)
+  - [Einführung](#einführung)
+  - [Code-Übersicht](#code-übersicht)
   - [Importieren der benötigten Bibliotheken und Module](#importieren-der-benötigten-bibliotheken-und-module)
   - [Flask-Anwendung initialisieren](#flask-anwendung-initialisieren)
   - [Rate-Limiting-Einstellungen](#rate-limiting-einstellungen)
   - [IP-Adressen-Sperrung und Whitelisting](#ip-adressen-sperrung-und-whitelisting)
   - [Dauer der automatischen Entsperrung](#dauer-der-automatischen-entsperrung)
-- [Routen der Flask-Anwendung](#routen-der-flask-anwendung)
+  - [Routen der Flask-Anwendung](#routen-der-flask-anwendung)
   - [Hauptseite (/)](#hauptseite-)
   - [IP-Adresse blockieren (/block_ip/&lt;ip&gt;)](#ip-adresse-blockieren-block_ipip)
   - [IP-Adresse entsperren (/unblock_ip/&lt;ip&gt;)](#ip-adresse-entsperren-unblock_ipip)
-- [Automatisches Entfernen von gesperrten IP-Adressen](#automatisches-entfernen-von-gesperrten-ip-adressen)
-- [Ausführung der Anwendung](#ausführung-der-anwendung)
-- [Fazit](#fazit)
+  - [Automatisches Entfernen von gesperrten IP-Adressen](#automatisches-entfernen-von-gesperrten-ip-adressen)
+  - [Ausführung der Anwendung](#ausführung-der-anwendung)
+  - [Fazit](#fazit)
 
 ---
 
@@ -38,9 +38,11 @@ Codes zu erleichtern und Möglichkeiten zur Erweiterung und Anpassung aufzuzeige
 
 ### Importieren der benötigten Bibliotheken und Module
 
-Zu Beginn des Codes werden die erforderlichen Bibliotheken und Module importiert. Diese sind notwendig, um die Funktionalität der Anwendung zu unterstützen.
+Zu Beginn des Codes werden die erforderlichen Bibliotheken und Module importiert. Diese sind notwendig, 
+um die Funktionalität der Anwendung zu unterstützen.
 
 ```python
+
 from flask import Flask, request
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_limiter import Limiter
@@ -138,7 +140,9 @@ if __name__ == '__main__':
 
 ## Fazit
 
-Insgesamt handelt es sich bei diesem Code um eine Flask-Anwendung, die Rate-Limiting, IP-Sperrung und Whitelisting bietet. Sie ermöglicht die einfache Verwaltung von Zugriffsberechtigungen für bestimmte IP-Adressen und die automatische Entsperrung nach einer festgelegten Zeitdauer.
+Insgesamt handelt es sich bei diesem Code um eine Flask-Anwendung, die Rate-Limiting, IP-Sperrung und Whitelisting bietet.
+Sie ermöglicht die einfache Verwaltung von Zugriffsberechtigungen für bestimmte IP-Adressen und die automatische Entsperrung
+nach einer festgelegten Zeitdauer.
 Der Code ist gut strukturiert und dokumentiert, um anderen Entwicklern die Erweiterung und Anpassung des Projekts zu erleichtern.
 Dieser DDoS-Guard kann dazu beitragen, Webanwendungen vor Angriffen zu schützen und die Zuverlässigkeit zu gewährleisten.
 
