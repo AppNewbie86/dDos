@@ -29,7 +29,9 @@
 
 ## Einführung
 
-Diese Dokumentation erklärt einen Python-Code für eine Flask-Webanwendung, die als DDoS-Guard (Schutz vor Distributed Denial of Service-Angriffen) dient. Die Anwendung bietet Funktionen wie Rate-Limiting, IP-Sperrung und Whitelisting. Ziel ist es, anderen Entwicklern das Verständnis des 
+Diese Dokumentation erklärt einen Python-Code für eine Flask-Webanwendung, die als DDoS-Guard 
+(Schutz vor Distributed Denial of Service-Angriffen) dient. 
+Die Anwendung bietet Funktionen wie Rate-Limiting, IP-Sperrung und Whitelisting. Ziel ist es, anderen Entwicklern das Verständnis des 
 Codes zu erleichtern und Möglichkeiten zur Erweiterung und Anpassung aufzuzeigen.
 
 ---
@@ -50,7 +52,8 @@ from datetime import timedelta
 
 ## Flask-Anwendung initialisieren
 
-Die Flask-Anwendung wird initialisiert, und die ProxyFix-Middleware wird hinzugefügt, um den korrekten Umgang mit Proxys sicherzustellen.
+Die Flask-Anwendung wird initialisiert, und die ProxyFix-Middleware wird hinzugefügt,
+um den korrekten Umgang mit Proxys sicherzustellen.
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -65,24 +68,30 @@ limiter.limit("10 per minute")(app)
 
 ## IP-Adressen-Sperrung und Whitelisting
 
-Um unerwünschte oder schädliche IP-Adressen zu blockieren und vertrauenswürdige IP-Adressen zuzulassen, werden zwei Listen erstellt.
+Um unerwünschte oder schädliche IP-Adressen zu blockieren und vertrauenswürdige
+IP-Adressen zuzulassen, werden zwei Listen erstellt.
 
 blocked_ips = set()
 whitelisted_ips = {'127.0.0.1', '192.168.1.100', '203.0.113.45'}  # Beispiel-Whitelist
 
 ## Dauer der automatischen Entsperrung
 
-Hier wird festgelegt, wie lange eine IP-Adresse automatisch gesperrt bleibt, bevor sie wieder freigeschaltet wird.
+Hier wird festgelegt, wie lange eine IP-Adresse automatisch
+gesperrt bleibt, bevor sie wieder freigeschaltet wird.
 
 block_duration = timedelta(minutes=10)
 
 Routen der Flask-Anwendung
-Die Anwendung enthält verschiedene Routen, die die Funktionalität des DDoS-Guards steuern.
+
+Die Anwendung enthält verschiedene Routen, die die Funktionalität
+des DDoS-Guards steuern.
 
 ## Hauptseite (/)
 
-Die Hauptseite der Anwendung überprüft, ob die IP-Adresse des Benutzers in der Whitelist steht. Falls ja, wird eine
-Willkommensnachricht angezeigt. Wenn die IP-Adresse in der Sperrliste steht, wird eine Fehlermeldung mit dem
+Die Hauptseite der Anwendung überprüft, ob die IP-Adresse des Benutzers in der Whitelist steht.
+Falls ja, wird eine Willkommensnachricht angezeigt. Wenn die IP-Adresse in der Sperrliste steht,
+wird eine Fehlermeldung mit dem
+
 Statuscode 403 zurückgegeben.
 
 @app.route('/')
@@ -99,7 +108,9 @@ def index():
 ## IP-Adresse blockieren (/block_ip/<ip>)
 
 IP-Adresse blockieren (/block_ip/<ip>)
-Diese Route ermöglicht das Hinzufügen einer IP-Adresse zur Sperrliste. Die IP-Adresse wird hinzugefügt, und es wird eine Meldung über die Sperrung zurückgegeben. Zudem wird die automatische Entsperrung geplant.
+Diese Route ermöglicht das Hinzufügen einer IP-Adresse zur Sperrliste.
+Die IP-Adresse wird hinzugefügt, und es wird eine Meldung über die Sperrung zurückgegeben.
+Zudem wird die automatische Entsperrung geplant.
 
 @app.route('/block_ip/<ip>')
 def block_ip(ip):
@@ -111,8 +122,9 @@ def block_ip(ip):
 
 ## IP-Adresse entsperren (/unblock_ip/<ip>)
 
-Diese Route ermöglicht das Entfernen einer IP-Adresse aus der Sperrliste. Die IP-Adresse wird aus der Liste entfernt,
-und es wird eine Meldung über die Entsperrung zurückgegeben.
+Diese Route ermöglicht das Entfernen einer IP-Adresse aus der Sperrliste.
+Die IP-Adresse wird aus der Liste entfernt, und es wird eine Meldung über die
+Entsperrung zurückgegeben.
 
 @app.route('/unblock_ip/<ip>')
 def unblock_ip(ip):
@@ -122,7 +134,9 @@ def unblock_ip(ip):
 
 ## Automatisches Entfernen von gesperrten IP-Adressen
 
-Eine Funktion namens remove_from_blocked_ips plant das Entfernen einer IP-Adresse aus der Sperrliste nach Ablauf der in block_duration definierten Zeitspanne. Diese Funktion verwendet einen Timer, um die Entfernung zu planen, und gibt Informationen darüber im Anwendungsprotokoll aus.
+Eine Funktion namens remove_from_blocked_ips plant das Entfernen einer IP-Adresse aus der Sperrliste
+nach Ablauf der in block_duration definierten Zeitspanne. Diese Funktion verwendet einen Timer, um die
+Entfernung zu planen, und gibt Informationen darüber im Anwendungsprotokoll aus.
 
 def remove_from_blocked_ips(ip, duration):
     # Entfernt eine IP-Adresse nach einer bestimmten Zeit aus der Sperrliste
@@ -133,18 +147,20 @@ def remove_from_blocked_ips(ip, duration):
 
 ## Ausführung der Anwendung
 
-Die Anwendung wird nur gestartet, wenn die Datei direkt ausgeführt wird und nicht als Modul in einem anderen Skript importiert wird.
+Die Anwendung wird nur gestartet, wenn die Datei direkt ausgeführt wird und nicht als Modul in einem
+anderen Skript importiert wird.
 
 if __name__ == '__main__':
     app.run()
 
 ## Fazit
 
-Insgesamt handelt es sich bei diesem Code um eine Flask-Anwendung, die Rate-Limiting, IP-Sperrung und Whitelisting bietet.
-Sie ermöglicht die einfache Verwaltung von Zugriffsberechtigungen für bestimmte IP-Adressen und die automatische Entsperrung
-nach einer festgelegten Zeitdauer.
-Der Code ist gut strukturiert und dokumentiert, um anderen Entwicklern die Erweiterung und Anpassung des Projekts zu erleichtern.
-Dieser DDoS-Guard kann dazu beitragen, Webanwendungen vor Angriffen zu schützen und die Zuverlässigkeit zu gewährleisten.
+Insgesamt handelt es sich bei diesem Code um eine Flask-Anwendung,
+die Rate-Limiting, IP-Sperrung und Whitelisting bietet. Sie ermöglicht die einfache Verwaltung von Zugriffsberechtigungen
+für bestimmte IP-Adressen und die automatische Entsperrung nach einer festgelegten Zeitdauer.
+Der Code ist gut strukturiert und dokumentiert, um anderen Entwicklern die Erweiterung und Anpassung
+des Projekts zu erleichtern. Dieser DDoS-Guard kann dazu beitragen, Webanwendungen vor Angriffen zu schützen
+und die Zuverlässigkeit zu gewährleisten.
 
 
 
