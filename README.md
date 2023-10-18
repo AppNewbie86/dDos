@@ -165,5 +165,39 @@ Der Code ist gut strukturiert und dokumentiert, um anderen Entwicklern die Erwei
 des Projekts zu erleichtern. Dieser DDoS-Guard kann dazu beitragen, Webanwendungen vor Angriffen zu schützen
 und die Zuverlässigkeit zu gewährleisten.
 
+Wenn Sie ihr Tool Testen möchten können Sie das mit folgendem Code tun:
+
+import requests
+
+def test_whitelisted_ip():
+    response = requests.get("http://localhost:5000")
+    assert response.status_code == 200
+    assert response.text == "Willkommen auf unserer Website!"
+
+def test_not_whitelisted_ip():
+    response = requests.get("http://localhost:5000", proxies={"http": "http://127.0.0.1:8080"})
+    assert response.status_code == 403
+    assert response.text == "Ihre IP-Adresse ist gesperrt."
+
+def test_block_ip():
+    requests.post("http://localhost:5000/block_ip/127.0.0.1")
+
+    response = requests.get("http://localhost:5000", proxies={"http": "http://127.0.0.1:8080"})
+    assert response.status_code == 403
+    assert response.text == "Ihre IP-Adresse ist gesperrt."
+
+def test_unblock_ip():
+    requests.post("http://localhost:5000/unblock_ip/127.0.0.1")
+
+    response = requests.get("http://localhost:5000", proxies={"http": "http://127.0.0.1:8080"})
+    assert response.status_code == 200
+    assert response.text == "Willkommen auf unserer Website!"
+
+if __name__ == "__main__":
+    test_whitelisted_ip()
+    test_not_whitelisted_ip()
+    test_block_ip()
+    test_unblock_ip()
+
 
 
